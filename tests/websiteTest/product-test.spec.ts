@@ -15,7 +15,7 @@ test.describe('Product Page Validation', () => {
 
     })
 
-    test.only('Validate About Page and Goback Scenarios', async({page}) => {
+    test('Validate About Page and Goback Scenarios', async({page}) => {
 
         const productPage = new  ProductPage(page)
         const aboutPage = new AboutPage(page)
@@ -38,4 +38,33 @@ test.describe('Product Page Validation', () => {
         await expect(loginPage.loginButton).toBeVisible()
         
     })
+
+    test('Validate All Products are Displayed', async({page}) =>{
+
+        const productPage = new ProductPage(page)
+
+        await productPage.validateAllProductIsDisplayed()
+
+    })
+
+    test('Validate Add First Product to Cart', async({page}) =>{
+
+        const productPage = new ProductPage(page)
+
+        await productPage.addFirstProductToCart()
+        
+    })
+
+    test('Validate Add All Product to Cart', async({page}) =>{
+
+        const productPage = new ProductPage(page)
+
+        const initialProductCount = await productPage.addToCart.count()
+
+        await productPage.addAllProductToCart()
+        await expect(productPage.addToCart).toHaveCount(0)
+        await expect(productPage.cartIcon).toHaveText(String(initialProductCount))
+        
+    })
+
 })
